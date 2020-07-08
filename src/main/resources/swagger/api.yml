@@ -1,0 +1,92 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: "ppdb"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/"
+tags:
+  - name: "series"
+    description: "Managing series"
+  - name: "subscriptions"
+    description: "Managing subscriptions"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /series:
+    get:
+      tags:
+        - "series"
+      responses:
+        "200":
+          description: "Ok"
+      summary: "Find all series"
+  /series/{id}:
+    get:
+      tags:
+        - "series"
+      summary: "Find a series by id"
+      responses:
+        "200":
+          description: "Ok"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of series to return"
+          required: true
+          type: "integer"
+          format: "int64"
+  /series/{id}/subscribe:
+    put:
+      tags:
+        - "series"
+      responses:
+        "201":
+          description: "Subscribed to series"
+        "200":
+          description: "Already subscribed to series"
+      summary: "Subscribe to a series"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of series to subscribe to"
+          required: true
+          type: "integer"
+          format: "int64"
+  /subscriptions:
+    get:
+      tags:
+        - "subscriptions"
+      responses:
+        "200":
+          description: "Subscriptions retrieved successfully"
+    delete:
+      tags:
+        - "subscriptions"
+      responses:
+        "201":
+          description: "Unsubscribed to series"
+        "200":
+          description: "Not subscribed to series"
+      summary: "Unsubscribe from a series"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Series object to unsubscribe from"
+          required: true
+          schema:
+            $ref: "#/definitions/Subscription"
+
+definitions:
+  Subscription:
+    type: "object"
+    required:
+      - "seriesId"
+    properties:
+      seriesId:
+        type: "integer"
+        format: "int64"
